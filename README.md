@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# yusi
 
-## Getting Started
+개인 포트폴리오 & 블로그
 
-First, run the development server:
+## 기술 스택
+
+| 역할 | 기술 |
+|---|---|
+| 프레임워크 | Next.js 16 (App Router) |
+| 언어 | TypeScript |
+| 스타일링 | Panda CSS |
+| 컴포넌트 | Park UI |
+| 애니메이션 | Framer Motion |
+| 블로그 | MDX (next-mdx-remote + gray-matter) |
+| 코드 하이라이팅 | Shiki (rehype-pretty-code) |
+| 배포 | Vercel |
+
+## 시작하기
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 프로젝트 구조
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+yusi/
+├── app/                  # Next.js App Router
+│   ├── page.tsx          # 메인 (소개) 페이지
+│   ├── blog/
+│   │   ├── page.tsx      # 블로그 목록
+│   │   └── [slug]/
+│   │       └── page.tsx  # 블로그 포스트
+│   └── layout.tsx
+├── components/           # 공통 컴포넌트
+├── posts/                # MDX 블로그 포스트
+│   └── hello-world.mdx
+└── styled-system/        # Panda CSS 생성 파일 (자동 생성)
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 블로그 글 작성
 
-## Learn More
+`posts/` 폴더에 `.mdx` 파일을 추가합니다.
 
-To learn more about Next.js, take a look at the following resources:
+```mdx
+---
+title: "글 제목"
+date: "2025-01-01"
+tags: ["react", "frontend"]
+description: "글 요약"
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+본문 내용...
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 빌드
 
-## Deploy on Vercel
+```bash
+npm run build
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Panda CSS codegen이 자동으로 먼저 실행됩니다.

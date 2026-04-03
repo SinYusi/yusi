@@ -3,17 +3,26 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "panda codegen --watch & next dev",
+    "build": "panda codegen && next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "prepare": "panda codegen"
   },
   "dependencies": {
+    "@pandacss/preset-panda": "^1.9.1",
+    "@park-ui/panda-preset": "^0.38.1",
+    "framer-motion": "^12.38.0",
+    "gray-matter": "^4.0.3",
     "next": "16.2.2",
+    "next-mdx-remote": "^6.0.0",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "rehype-pretty-code": "^0.14.3",
+    "shiki": "^4.0.2"
   },
   "devDependencies": {
+    "@pandacss/dev": "^1.9.1",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
