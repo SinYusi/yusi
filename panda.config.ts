@@ -6,41 +6,49 @@ export default defineConfig({
 
   presets: [
     "@pandacss/preset-base",
-    createPreset({ accentColor: "amber", grayColor: "neutral", borderRadius: "sm" }),
+    createPreset({ accentColor: "indigo", grayColor: "slate", borderRadius: "sm" }),
   ],
 
   include: ["./app/**/*.{js,jsx,ts,tsx}", "./components/**/*.{js,jsx,ts,tsx}"],
 
   exclude: [],
 
+  globalCss: {
+    "html, body": {
+      fontFamily: "sans",
+    },
+  },
+
   theme: {
     extend: {
       tokens: {
         fonts: {
-          sans: { value: "var(--font-sans), 'Noto Sans KR', sans-serif" },
+          sans: {
+            value: "var(--font-geist-sans), var(--font-noto-sans-kr), sans-serif",
+          },
         },
       },
       semanticTokens: {
         colors: {
           bg: {
             canvas: {
-              value: { base: "#FAFAF7", _dark: "#1B1916" },
+              value: { base: "#FAFBFC", _dark: "#111113" },
             },
             subtle: {
-              value: { base: "#F2EFE9", _dark: "#242119" },
+              value: { base: "#F0F1F4", _dark: "#1A1B1E" },
             },
           },
           border: {
             subtle: {
-              value: { base: "#E4DED4", _dark: "#2E2C27" },
+              value: { base: "#E2E4E9", _dark: "#2A2E35" },
             },
           },
           text: {
             default: {
-              value: { base: "#272420", _dark: "#EDE9E2" },
+              value: { base: "#1C2024", _dark: "#EDEEF0" },
             },
             muted: {
-              value: { base: "#7A7670", _dark: "#6E6B65" },
+              value: { base: "#60646C", _dark: "#787E86" },
             },
           },
         },
