@@ -14,6 +14,9 @@ const notoSansKr = Noto_Sans_KR({
   weight: ["400", "500", "700"],
   subsets: ["latin"],
   display: "swap",
+  // CJK 폰트는 subset preload 대상이 아니므로 불필요한 preload를 비활성화한다.
+  // 라틴 글리프는 주 폰트인 Geist가 담당한다.
+  preload: false,
 });
 
 export const metadata: Metadata = {
