@@ -1,0 +1,41 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+
+language: "ko-KR"
+tone_instructions: "간결하고 친절하게, 이유와 함께 개선점을 설명한다. 학습에 도움이 되도록 왜 그런지 짧게 덧붙인다."
+
+reviews:
+  profile: "chill"
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: false
+  review_status: true
+  collapse_walkthrough: false
+
+  auto_review:
+    enabled: true
+    drafts: false
+    base_branches:
+      - "dev"
+      - "main"
+
+  path_filters:
+    - "!styled-system/**"
+    - "!pnpm-lock.yaml"
+    - "!**/*.min.js"
+    - "!public/**"
+
+  path_instructions:
+    - path: "posts/**/*.mdx"
+      instructions: >-
+        한국어 프론트엔드 CS 기술 블로그 글이다. 오탈자, 비문, 어색한 표현, 깨진 링크,
+        마크다운/MDX 문법 오류, 그리고 frontmatter 필수 필드(title, date, description) 누락을
+        확인하고 제안하라. 필자의 문체와 어투는 최대한 존중하고, 명백한 오류 위주로 지적하라.
+    - path: "**/*.{ts,tsx}"
+      instructions: >-
+        Next.js 16 App Router + TypeScript + Panda CSS 프로젝트다. 다음을 확인하라.
+        (1) Server/Client Component 구분이 올바른지, 훅/이벤트/브라우저 API 사용 시 "use client"가 있는지.
+        (2) styled-system 폴더를 직접 수정하지 않았는지(자동 생성물), 스타일은 css()/cva()로 작성했는지.
+        (3) 접근성(시맨틱 태그, aria, 키보드 접근)과 명백한 성능 이슈.
+
+chat:
+  auto_reply: true
