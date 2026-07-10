@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Panda CSS 자동 생성물 — 린트 대상에서 제외.
+    "styled-system/**",
   ]),
 ]);
 
