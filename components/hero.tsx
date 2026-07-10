@@ -73,6 +73,11 @@ const primaryCta = css({
   borderRadius: "l2",
   transition: "background-color 0.15s",
   _hover: { backgroundColor: "accent.emphasized" },
+  _focusVisible: {
+    outline: "2px solid",
+    outlineColor: "accent.default",
+    outlineOffset: "2px",
+  },
 });
 
 const secondaryCta = css({
@@ -88,6 +93,11 @@ const secondaryCta = css({
   borderColor: "border.subtle",
   transition: "background-color 0.15s",
   _hover: { backgroundColor: "bg.subtle" },
+  _focusVisible: {
+    outline: "2px solid",
+    outlineColor: "accent.default",
+    outlineOffset: "2px",
+  },
 });
 
 function ArrowRight() {
