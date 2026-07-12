@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { css } from "@/styled-system/css";
-import { ContributionGraph } from "@/components/daily-log/contribution-graph";
+import { ContributionGraph } from "@/components/contribution-graph";
 import type { GridDay, Stats } from "@/lib/daily-log/stats";
 
 const section = css({

@@ -1,5 +1,5 @@
-import { Hero } from "@/components/hero";
-import { ActivityPreview } from "@/components/landing/activity-preview";
+import { Hero } from "@/app/_components/hero";
+import { ActivityPreview } from "@/app/_components/activity-preview";
 import { loadActivity } from "@/lib/daily-log/load";
 
 // 활동 기록은 자주 바뀌지 않으므로 ISR로 1시간마다 갱신한다.
