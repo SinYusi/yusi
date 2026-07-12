@@ -4,6 +4,7 @@ import { createPublicClient } from "@/lib/supabase/public";
 import { isAdmin } from "@/lib/auth";
 import { logout } from "@/app/login/actions";
 import { Checklist } from "@/components/daily-log/checklist";
+import { kstToday } from "@/lib/daily-log/date";
 import type { DailyTask } from "@/lib/daily-log/types";
 
 export const metadata: Metadata = {
@@ -52,7 +53,7 @@ const logoutBtn = css({
 
 export default async function DailyLogPage() {
   const now = new Date();
-  const today = new Intl.DateTimeFormat("en-CA", { timeZone: KST }).format(now); // YYYY-MM-DD (KST)
+  const today = kstToday(now);
   const dateLabel = new Intl.DateTimeFormat("ko-KR", {
     timeZone: KST,
     month: "long",
