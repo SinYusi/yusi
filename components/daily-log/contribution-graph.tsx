@@ -107,7 +107,7 @@ export function ContributionGraph({ weeks }: { weeks: GridDay[][] }) {
   return (
     <div ref={wrapperRef} className={wrapper}>
       <p className={srOnly}>
-        최근 6개월 활동 기록. 색이 진할수록 그날 완료한 항목이 많습니다. 기록한 날은 총{" "}
+        활동 기록 그래프. 색이 진할수록 그날 완료한 항목이 많습니다. 기록한 날은 총{" "}
         {activeDays}일입니다.
       </p>
 

@@ -7,12 +7,7 @@ import { Checklist } from "@/components/daily-log/checklist";
 import { StatsCards } from "@/components/daily-log/stats-cards";
 import { ContributionGraph } from "@/components/daily-log/contribution-graph";
 import { kstToday } from "@/lib/daily-log/date";
-import {
-  aggregateDoneByDate,
-  buildGrid,
-  computeStats,
-  type DailyTaskRow,
-} from "@/lib/daily-log/stats";
+import { loadActivity } from "@/lib/daily-log/load";
 import type { DailyTask } from "@/lib/daily-log/types";
 
 export const metadata: Metadata = {
@@ -72,19 +67,17 @@ export default async function DailyLogPage() {
   }).format(now);
 
   const supabase = createPublicClient();
-  const [todayRes, allRes] = await Promise.all([
+  const [todayRes, activity] = await Promise.all([
     supabase
       .from("daily_tasks")
       .select("id, title, done, log_date, created_at")
       .eq("log_date", today)
       .order("created_at", { ascending: true }),
-    supabase.from("daily_tasks").select("log_date, done"),
+    loadActivity(26),
   ]);
 
   const tasks = (todayRes.data ?? []) as DailyTask[];
-  const doneByDate = aggregateDoneByDate((allRes.data ?? []) as DailyTaskRow[]);
-  const stats = computeStats(doneByDate, today);
-  const grid = buildGrid(doneByDate, today, 26);
+  const { stats, grid } = activity;
 
   const owner = await isAdmin();
   const doneCount = tasks.filter((t) => t.done).length;
