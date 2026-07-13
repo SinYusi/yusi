@@ -3,8 +3,11 @@ import { css } from "@/styled-system/css";
 import { createPublicClient } from "@/lib/supabase/public";
 import { isAdmin } from "@/lib/auth";
 import { logout } from "@/app/login/actions";
-import { Checklist } from "@/components/daily-log/checklist";
+import { Checklist } from "@/app/daily-log/_components/checklist";
+import { StatsCards } from "@/app/daily-log/_components/stats-cards";
+import { ContributionGraph } from "@/components/contribution-graph";
 import { kstToday } from "@/lib/daily-log/date";
+import { loadActivity } from "@/lib/daily-log/load";
 import type { DailyTask } from "@/lib/daily-log/types";
 
 export const metadata: Metadata = {
@@ -31,15 +34,17 @@ const heading = css({
 
 const subtitle = css({ fontSize: "sm", color: "text.muted", marginBottom: "8" });
 
-const listHeader = css({
+const blockHeader = css({
   display: "flex",
   alignItems: "baseline",
   justifyContent: "space-between",
   marginBottom: "3",
 });
 
-const listTitle = css({ fontSize: "md", fontWeight: "medium", color: "text.default" });
-const listMeta = css({ fontSize: "sm", color: "text.muted" });
+const blockTitle = css({ fontSize: "md", fontWeight: "medium", color: "text.default" });
+const blockMeta = css({ fontSize: "sm", color: "text.muted" });
+
+const activityBlock = css({ marginBottom: "9" });
 
 const logoutRow = css({ marginTop: "8" });
 const logoutBtn = css({
@@ -62,13 +67,18 @@ export default async function DailyLogPage() {
   }).format(now);
 
   const supabase = createPublicClient();
-  const { data } = await supabase
-    .from("daily_tasks")
-    .select("id, title, done, log_date, created_at")
-    .eq("log_date", today)
-    .order("created_at", { ascending: true });
+  const [todayRes, activity] = await Promise.all([
+    supabase
+      .from("daily_tasks")
+      .select("id, title, done, log_date, created_at")
+      .eq("log_date", today)
+      .order("created_at", { ascending: true }),
+    loadActivity(26),
+  ]);
 
-  const tasks = (data ?? []) as DailyTask[];
+  const tasks = (todayRes.data ?? []) as DailyTask[];
+  const { stats, grid } = activity;
+
   const owner = await isAdmin();
   const doneCount = tasks.filter((t) => t.done).length;
 
@@ -77,9 +87,19 @@ export default async function DailyLogPage() {
       <h1 className={heading}>데일리 로그</h1>
       <p className={subtitle}>하루 일과를 체크하고, 꾸준함을 기록으로 남깁니다.</p>
 
-      <div className={listHeader}>
-        <span className={listTitle}>오늘의 체크리스트</span>
-        <span className={listMeta}>
+      <StatsCards stats={stats} />
+
+      <div className={activityBlock}>
+        <div className={blockHeader}>
+          <span className={blockTitle}>활동 기록</span>
+          <span className={blockMeta}>최근 6개월</span>
+        </div>
+        <ContributionGraph weeks={grid} />
+      </div>
+
+      <div className={blockHeader}>
+        <span className={blockTitle}>오늘의 체크리스트</span>
+        <span className={blockMeta}>
           {dateLabel}
           {tasks.length > 0 ? ` · ${doneCount}/${tasks.length}` : ""}
         </span>
