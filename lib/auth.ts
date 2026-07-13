@@ -22,6 +22,7 @@ function safeEqual(a: string, b: string) {
   return bufA.length === bufB.length && timingSafeEqual(bufA, bufB);
 }
 
+/** 요청의 관리자 세션 쿠키가 유효한지(= 오너 로그인 상태인지) 확인한다. */
 export async function isAdmin() {
   const value = (await cookies()).get(COOKIE_NAME)?.value;
   if (!value) return false;
@@ -32,6 +33,7 @@ export async function isAdmin() {
   }
 }
 
+/** 비밀번호가 맞으면 관리자 세션 쿠키를 발급하고 true를 반환한다. 틀리면 false. */
 export async function signIn(password: string) {
   if (!safeEqual(password, adminPassword())) return false;
   (await cookies()).set(COOKIE_NAME, sessionToken(), {
@@ -44,6 +46,7 @@ export async function signIn(password: string) {
   return true;
 }
 
+/** 관리자 세션 쿠키를 제거해 로그아웃한다. */
 export async function signOut() {
   (await cookies()).delete(COOKIE_NAME);
 }

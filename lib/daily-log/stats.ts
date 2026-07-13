@@ -33,7 +33,7 @@ function weekdayOf(dayNumber: number): number {
   return new Date(dayNumber * 86_400_000).getUTCDay();
 }
 
-// (log_date, done) 행들을 날짜별 "완료 항목 수" 맵으로 집계한다.
+/** (log_date, done) 행들을 날짜별 "완료 항목 수" 맵으로 집계한다. done=false 행은 무시한다. */
 export function aggregateDoneByDate(rows: DailyTaskRow[]): Map<string, number> {
   const map = new Map<string, number>();
   for (const row of rows) {
@@ -43,6 +43,10 @@ export function aggregateDoneByDate(rows: DailyTaskRow[]): Map<string, number> {
   return map;
 }
 
+/**
+ * 날짜별 완료 수 맵으로부터 현재 연속·최장 연속·총 기록일을 계산한다.
+ * 연속은 "완료 항목 ≥1인 날"의 연속이며, 현재 연속은 오늘이 아직 0이어도 어제까지로 이어서 센다.
+ */
 export function computeStats(
   doneByDate: Map<string, number>,
   today: string,
@@ -77,7 +81,7 @@ export function computeStats(
   return { currentStreak, longestStreak, totalDays };
 }
 
-// 최근 `weeks`주(일~토 열)의 그리드를 만든다. 마지막 열은 오늘이 속한 주.
+/** 최근 `weeks`주(일~토 열)의 잔디 그리드를 만든다. 마지막 열은 오늘이 속한 주이며, 미래 날짜는 isFuture로 표시한다. */
 export function buildGrid(
   doneByDate: Map<string, number>,
   today: string,

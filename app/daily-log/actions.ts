@@ -12,6 +12,7 @@ async function assertAdmin() {
   }
 }
 
+/** 오늘(KST) 날짜로 새 체크리스트 항목을 추가한다. 관리자만 가능. */
 export async function addTask(formData: FormData) {
   await assertAdmin();
   const title = String(formData.get("title") ?? "")
@@ -28,6 +29,7 @@ export async function addTask(formData: FormData) {
   revalidatePath("/daily-log");
 }
 
+/** 항목의 완료 상태를 토글한다. 관리자만 가능. */
 export async function toggleTask(formData: FormData) {
   await assertAdmin();
   const id = String(formData.get("id") ?? "");
@@ -44,6 +46,7 @@ export async function toggleTask(formData: FormData) {
   revalidatePath("/daily-log");
 }
 
+/** 항목을 삭제한다. 관리자만 가능. */
 export async function deleteTask(formData: FormData) {
   await assertAdmin();
   const id = String(formData.get("id") ?? "");
