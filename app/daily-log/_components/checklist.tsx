@@ -43,6 +43,18 @@ const checkTodo = css({
 const titleBase = css({ flex: "1", fontSize: "sm", color: "text.default" });
 const titleDone = css({ color: "text.muted", textDecoration: "line-through" });
 
+const srOnly = css({
+  position: "absolute",
+  width: "1px",
+  height: "1px",
+  padding: "0",
+  margin: "-1px",
+  overflow: "hidden",
+  clip: "rect(0, 0, 0, 0)",
+  whiteSpace: "nowrap",
+  borderWidth: "0",
+});
+
 const deleteBtn = css({
   flexShrink: "0",
   display: "inline-flex",
@@ -175,6 +187,7 @@ export function Checklist({
 
             <span className={`${titleBase} ${task.done ? titleDone : ""}`}>
               {task.title}
+              <span className={srOnly}>{task.done ? " 완료됨" : " 미완료"}</span>
             </span>
 
             {owner ? (
