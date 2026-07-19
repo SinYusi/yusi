@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
+import { css } from "@/styled-system/css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -56,9 +58,10 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
-      <body>
+      <body className={css({ display: "flex", flexDirection: "column", minHeight: "100dvh" })}>
         <SiteHeader />
         {children}
+        <SiteFooter />
       </body>
     </html>
   );
