@@ -123,10 +123,12 @@ function ProjectCard({ project }: { project: Project }) {
 
 export function ProjectList() {
   return (
-    <div className={list}>
+    <ul className={list}>
       {projects.map((p) => (
-        <ProjectCard key={p.name} project={p} />
+        <li key={p.name}>
+          <ProjectCard project={p} />
+        </li>
       ))}
-    </div>
+    </ul>
   );
 }

@@ -39,19 +39,19 @@ const accentTag = css({
 
 export function Skills() {
   return (
-    <div className={wrap}>
+    <ul className={wrap}>
       {skillGroups.map((g, i) => (
-        <div key={g.label} className={group}>
+        <li key={g.label} className={group}>
           <span className={groupLabel}>{g.label}</span>
-          <div className={tags}>
+          <ul className={tags}>
             {g.items.map((item) => (
-              <span key={item} className={i === 0 ? accentTag : tag}>
+              <li key={item} className={i === 0 ? accentTag : tag}>
                 {item}
-              </span>
+              </li>
             ))}
-          </div>
-        </div>
+          </ul>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 }
