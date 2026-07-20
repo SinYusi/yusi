@@ -14,8 +14,15 @@ export type PostMeta = {
 
 export type Post = PostMeta & { content: string };
 
+// 슬러그로 허용하는 문자. `.`과 경로 구분자를 막아 경로 순회(`../`)를 원천 차단한다.
+const SLUG_PATTERN = /^[A-Za-z0-9_-]+$/;
+
 function readPost(slug: string): Post | null {
+  if (!SLUG_PATTERN.test(slug)) return null;
+
   const fullPath = path.join(POSTS_DIR, `${slug}.mdx`);
+  // 정규화 후에도 posts/ 내부인지 재확인(이중 방어).
+  if (!fullPath.startsWith(POSTS_DIR + path.sep)) return null;
   if (!fs.existsSync(fullPath)) return null;
 
   const raw = fs.readFileSync(fullPath, "utf8");
@@ -55,7 +62,10 @@ export function getAllPosts(): PostMeta[] {
     }));
 }
 
-/** 슬러그로 글 본문+메타를 반환한다. 없으면 null. */
+/**
+ * 슬러그로 글 본문+메타를 반환한다. 없거나 슬러그 형식이 올바르지 않으면 null.
+ * 외부 입력(동적 라우트 파라미터)이 들어올 수 있으므로 경로 순회를 차단한다.
+ */
 export function getPostBySlug(slug: string): Post | null {
   return readPost(slug);
 }
