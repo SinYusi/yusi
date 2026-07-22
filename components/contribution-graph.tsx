@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import Link from "next/link";
 import { css } from "@/styled-system/css";
 import type { GridDay } from "@/lib/daily-log/stats";
 
@@ -23,6 +24,13 @@ const cellBase = css({
 });
 
 const cellFuture = css({ backgroundColor: "transparent" });
+
+const cellSelected = css({
+  outlineWidth: "2px",
+  outlineStyle: "solid",
+  outlineColor: "text.default",
+  outlineOffset: "1px",
+});
 
 // 색이 진할수록(단계 높을수록) 완료 항목이 많음. 라이트/다크 모두 적응.
 const cellByLevel = [
@@ -84,7 +92,13 @@ function labelOf(day: GridDay): string {
 
 type Hover = { label: string; left: number; top: number };
 
-export function ContributionGraph({ weeks }: { weeks: GridDay[][] }) {
+export function ContributionGraph({
+  weeks,
+  selectedDate,
+}: {
+  weeks: GridDay[][];
+  selectedDate?: string;
+}) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [hover, setHover] = useState<Hover | null>(null);
 
@@ -92,7 +106,7 @@ export function ContributionGraph({ weeks }: { weeks: GridDay[][] }) {
     .flat()
     .filter((day) => !day.isFuture && day.count > 0).length;
 
-  function handleEnter(event: React.MouseEvent<HTMLDivElement>, day: GridDay) {
+  function handleEnter(event: React.MouseEvent<HTMLElement>, day: GridDay) {
     const wrap = wrapperRef.current;
     if (!wrap) return;
     const cell = event.currentTarget.getBoundingClientRect();
@@ -108,19 +122,28 @@ export function ContributionGraph({ weeks }: { weeks: GridDay[][] }) {
     <div ref={wrapperRef} className={wrapper}>
       <p className={srOnly}>
         활동 기록 그래프. 색이 진할수록 그날 완료한 항목이 많습니다. 기록한 날은 총{" "}
-        {activeDays}일입니다.
+        {activeDays}일입니다. 날짜를 선택하면 그날의 기록을 볼 수 있습니다.
       </p>
 
-      <div className={scroll} aria-hidden="true">
+      <div className={scroll}>
         {weeks.map((weekDays, w) => (
           <div key={w} className={column}>
             {weekDays.map((day) =>
               day.isFuture ? (
-                <div key={day.date} className={`${cellBase} ${cellFuture}`} />
-              ) : (
                 <div
                   key={day.date}
-                  className={`${cellBase} ${cellByLevel[levelOf(day.count)]}`}
+                  className={`${cellBase} ${cellFuture}`}
+                  aria-hidden="true"
+                />
+              ) : (
+                <Link
+                  key={day.date}
+                  href={`/daily-log?date=${day.date}`}
+                  aria-label={labelOf(day)}
+                  aria-current={selectedDate === day.date ? "date" : undefined}
+                  className={`${cellBase} ${cellByLevel[levelOf(day.count)]} ${
+                    selectedDate === day.date ? cellSelected : ""
+                  }`}
                   onMouseEnter={(e) => handleEnter(e, day)}
                   onMouseLeave={() => setHover(null)}
                 />
@@ -130,7 +153,7 @@ export function ContributionGraph({ weeks }: { weeks: GridDay[][] }) {
         ))}
       </div>
 
-      <div className={legend}>
+      <div className={legend} aria-hidden="true">
         <span>적음</span>
         {cellByLevel.map((cls, i) => (
           <span key={i} className={`${cellBase} ${cls}`} />

@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { isAdmin } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { kstToday } from "@/lib/daily-log/date";
+import { resolveLogDate } from "@/lib/daily-log/date";
 
 // Server Action은 직접 POST로도 호출 가능하므로, 매 액션마다 관리자 인증을 검증한다.
 async function assertAdmin() {
@@ -20,10 +20,14 @@ export async function addTask(formData: FormData) {
     .slice(0, 200);
   if (!title) return;
 
+  const logDate = resolveLogDate(
+    formData.get("log_date")?.toString() || undefined,
+  );
+
   const supabase = createAdminClient();
   const { error } = await supabase
     .from("daily_tasks")
-    .insert({ title, log_date: kstToday() });
+    .insert({ title, log_date: logDate });
   if (error) throw error;
 
   revalidatePath("/daily-log");

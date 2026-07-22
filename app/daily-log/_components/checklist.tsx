@@ -150,9 +150,11 @@ function TrashIcon() {
 export function Checklist({
   tasks,
   owner,
+  logDate,
 }: {
   tasks: DailyTask[];
   owner: boolean;
+  logDate: string;
 }) {
   if (tasks.length === 0 && !owner) {
     return <p className={empty}>아직 오늘의 기록이 없어요.</p>;
@@ -208,6 +210,7 @@ export function Checklist({
 
       {owner ? (
         <form className={addForm} action={addTask}>
+          <input type="hidden" name="log_date" value={logDate} />
           <input
             className={addInput}
             type="text"
