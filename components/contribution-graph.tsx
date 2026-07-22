@@ -140,6 +140,7 @@ export function ContributionGraph({
                   key={day.date}
                   href={`/daily-log?date=${day.date}`}
                   aria-label={labelOf(day)}
+                  aria-current={selectedDate === day.date ? "date" : undefined}
                   className={`${cellBase} ${cellByLevel[levelOf(day.count)]} ${
                     selectedDate === day.date ? cellSelected : ""
                   }`}
