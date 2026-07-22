@@ -8,9 +8,19 @@ export function kstToday(now: Date = new Date()): string {
   return new Intl.DateTimeFormat("en-CA", { timeZone: KST }).format(now);
 }
 
-/** YYYY-MM-DD 형식 문자열인지 검사한다. */
+/**
+ * YYYY-MM-DD 형식이면서 실제 존재하는 달력 날짜인지 검사한다.
+ * 형식만 맞고 존재하지 않는 날짜(예: 2026-02-31)는 거부한다.
+ */
 export function isValidDateStr(value: string): boolean {
-  return /^\d{4}-\d{2}-\d{2}$/.test(value);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const [y, m, d] = value.split("-").map(Number);
+  const dt = new Date(Date.UTC(y, m - 1, d));
+  return (
+    dt.getUTCFullYear() === y &&
+    dt.getUTCMonth() === m - 1 &&
+    dt.getUTCDate() === d
+  );
 }
 
 /**
