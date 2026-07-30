@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { css } from "@/styled-system/css";
 import { getAllPosts } from "@/lib/blog/posts";
-import { PostCard } from "./_components/post-card";
+import { PostCard } from "@/components/post-card";
 
 export const metadata: Metadata = {
   title: "블로그",
@@ -46,7 +46,7 @@ export default function BlogPage() {
       ) : (
         <div>
           {posts.map((post) => (
-            <PostCard key={post.slug} post={post} />
+            <PostCard key={post.slug} post={post} basePath="/blog" />
           ))}
         </div>
       )}

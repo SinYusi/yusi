@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { css } from "@/styled-system/css";
-import type { PostMeta } from "@/lib/blog/posts";
+import type { DocMeta } from "@/lib/content/mdx";
 
 const card = css({
   display: "block",
@@ -43,9 +43,15 @@ function formatDate(date: string): string {
   return date ? date.replaceAll("-", ".") : "";
 }
 
-export function PostCard({ post }: { post: PostMeta }) {
+export function PostCard({
+  post,
+  basePath,
+}: {
+  post: DocMeta;
+  basePath: string;
+}) {
   return (
-    <Link href={`/blog/${post.slug}`} className={card}>
+    <Link href={`${basePath}/${post.slug}`} className={card}>
       <p className={dateText}>{formatDate(post.date)}</p>
       <h2 className={title}>{post.title}</h2>
       <p className={description}>{post.description}</p>
