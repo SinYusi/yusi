@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Geist, Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "@/components/site-header";
@@ -28,20 +29,6 @@ export const metadata: Metadata = {
     "브라우저 너머의 원리가 궁금한 프론트엔드 개발자 yusi의 블로그와 기록.",
 };
 
-const themeInitScript = `
-(function () {
-  try {
-    var stored = localStorage.getItem('theme');
-    var isDark = stored
-      ? stored === 'dark'
-      : window.matchMedia('(prefers-color-scheme: dark)').matches;
-    var root = document.documentElement;
-    root.classList.toggle('dark', isDark);
-    root.style.colorScheme = isDark ? 'dark' : 'light';
-  } catch (e) {}
-})();
-`;
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -53,10 +40,11 @@ export default function RootLayout({
       className={`${geistSans.variable} ${notoSansKr.variable}`}
       suppressHydrationWarning
     >
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
-      </head>
       <body>
+        {/* 테마 플래시 방지: 하이드레이션 전에 html에 dark 클래스를 적용한다.
+            외부 파일 + next/script(beforeInteractive)로 두어 React 19 인라인 스크립트
+            경고와 no-sync-scripts 린트를 모두 피한다. */}
+        <Script src="/theme-init.js" strategy="beforeInteractive" />
         <SiteHeader />
         {children}
       </body>
