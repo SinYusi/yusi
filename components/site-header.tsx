@@ -4,6 +4,7 @@ import { ThemeToggle } from "./theme-toggle";
 
 const navLinks = [
   { href: "/blog", label: "블로그" },
+  { href: "/notes", label: "노트" },
   { href: "/daily-log", label: "데일리 로그" },
   { href: "/about", label: "소개" },
 ];
